@@ -2,8 +2,10 @@
     <div>
         <NavComp />
         <section>
+            <h1 class="mt-32 mb-4 ml-4 font-montserrat font-bold text-4xl">Customer</h1>
+            <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
+                @click="edit(-1)">Add customer</button>
             <div v-if="customers.length > 0">
-                <h1 class="mt-32 mb-4 font-montserrat font-bold text-4xl">Customer</h1>
                 <div class="sm:grid sm:grid-cols-3 gap-5 w-4/5 sm:w-3/5 my-5 mx-auto">
                     <div  class="mb-5 cursor-pointer" v-for="(item, i) in customers" :key="i">
                         <div class="p-5 shadow-lg">
@@ -20,6 +22,10 @@
                                 <p>
                                     Address: {{ item.attributes.Address }}
                                 </p>
+                                <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
+                                    @click="edit(item.id)">Edit</button>
+                                <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
+                                    @click="remove(item.id)">Remove</button>
                             </div>
                         </div>
                     </div>
@@ -60,13 +66,24 @@
                     },
                 })
                 this.customers = res.data.data
-                console.log(res.data)
                 this.totalPages = res.data.meta.pagination.pageCount
                 this.totalRecords = res.data.meta.pagination.total
             },
             onPageChange(page) {
                 this.page = page
                 this.loadListItem()
+            },
+            remove(cusId) {
+                this.axios.delete(`http://localhost:1337/api/customers/${cusId}`, {
+                    headers: {
+                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                    },
+                })
+                this.loadListItem()
+            },
+            edit(cusId) {
+                window.localStorage.setItem('cusId', cusId)
+                this.$router.push('/customer-item')
             }
         },
         created() {
