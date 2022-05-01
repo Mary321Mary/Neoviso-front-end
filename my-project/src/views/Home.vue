@@ -2,10 +2,12 @@
     <div class="overflow-x-hidden">
         <NavComp class="z-20" />
         <section>
+            <h1 class="mt-32 mb-4 ml-4 font-montserrat font-bold text-4xl">Appointments</h1>
+            <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
+                @click="edit(-1)">Add appointment</button>
             <div v-if="appointments.length > 0">
-                <h1 class="mt-32 mb-4 font-montserrat font-bold text-4xl">Appointments</h1>
                 <div class="sm:grid sm:grid-cols-3 gap-5 w-4/5 sm:w-3/5 my-5 mx-auto">
-                    <div  class="mb-5 cursor-pointer" v-for="(item, i) in appointments" :key="i">
+                    <div class="mb-5 cursor-pointer" v-for="(item, i) in appointments" :key="i">
                         <div class="p-5 shadow-lg">
                             <!--<router-link :to='`/bookmark/${item.label}`'>
                                 <h1 class="text-2xl font-bold font-montserrat mb-5">
@@ -17,10 +19,10 @@
                                     Date: {{ item.attributes.date }}
                                 </p>
                                 <p>
-                                    Start: {{ item.attributes.start }}
+                                    Start: {{ getTime(item.attributes.start) }}
                                 </p>
                                 <p>
-                                    End: {{ item.attributes.end }}
+                                    End: {{ getTime(item.attributes.end) }}
                                 </p>
                                 <p>
                                     Employee: {{ item.attributes.Employee.data.attributes.Name }}
@@ -28,6 +30,10 @@
                                 <p>
                                     Customer: {{ item.attributes.Customer.data.attributes.Name }}
                                 </p>
+                                <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
+                                    @click="edit(item.id)">Edit</button>
+                                <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
+                                    @click="remove(item.id)">Remove</button>
                             </div>
                         </div>
                     </div>
@@ -44,6 +50,7 @@
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
     import PaginationComp from '@/components/Pagination'
+    
     export default {
         name: 'HomePage',
         components: {
@@ -75,6 +82,22 @@
             onPageChange(page) {
                 this.page = page
                 this.loadListItem()
+            },
+            getTime(time) {
+                let newTime = time.slice(0, 5)
+                return newTime
+            },
+            remove(appointId) {
+                this.axios.delete(`http://localhost:1337/api/appointments/${appointId}`, {
+                    headers: {
+                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                    },
+                })
+                this.loadListItem()
+            },
+            edit(appointId) {
+                window.localStorage.setItem('appointId', appointId)
+                this.$router.push('/appointment-item')
             }
         },
         created() {

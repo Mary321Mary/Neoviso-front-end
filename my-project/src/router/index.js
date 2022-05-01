@@ -8,6 +8,10 @@ import LoginPage from '../views/Login.vue'
 import CustomerPage from '../views/Customer.vue'
 import DepartmentPage from '../views/Department.vue'
 import EmployeePage from '../views/Employee.vue'
+import AppointmentItem from '../views/AppointmentItem.vue'
+import DepartmentItem from '../views/DepartmentItem.vue'
+import CustomerItem from '../views/CustomerItem.vue'
+import EmployeeItem from '../views/EmployeeItem.vue'
 
 const routes = [
     {
@@ -34,6 +38,26 @@ const routes = [
         path: '/employee',
         name: 'EmployeePage',
         component: EmployeePage
+    },
+    {
+        path: '/appointment-item',
+        name: 'AppointmentItem',
+        component: AppointmentItem
+    },
+    {
+        path: '/department-item',
+        name: 'DepartmentItem',
+        component: DepartmentItem
+    },
+    {
+        path: '/customer-item',
+        name: 'CustomerItem',
+        component: CustomerItem
+    },
+    {
+        path: '/employee-item',
+        name: 'EmployeeItem',
+        component: EmployeeItem
     }
 ]
 
