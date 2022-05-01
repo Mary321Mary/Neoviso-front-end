@@ -5,10 +5,9 @@ import vueAxios from 'vue-axios'
 import App from '../App.vue'
 import HomePage from '../views/Home.vue'
 import LoginPage from '../views/Login.vue'
-import AppointmentPage from '../views/Appointment.vue'
-// import Customer from '../views/Customer.vue'
-// import Department from '../views/Department.vue'
-// import Employee from '../views/Employee.vue'
+import CustomerPage from '../views/Customer.vue'
+import DepartmentPage from '../views/Department.vue'
+import EmployeePage from '../views/Employee.vue'
 
 const routes = [
     {
@@ -22,24 +21,19 @@ const routes = [
         component: LoginPage
     },
     {
-        path: '/appointment',
-        name: 'AppointmentPage',
-        component: AppointmentPage
-    // },
-    // {
-    //     path: '/customer',
-    //     name: 'Customer',
-    //     component: Customer
-    // },
-    // {
-    //     path: '/department',
-    //     name: 'Department',
-    //     component: Department
-    // },
-    // {
-    //     path: '/employee',
-    //     name: 'Employee',
-    //     component: Employee
+        path: '/customer',
+        name: 'CustomerPage',
+        component: CustomerPage
+    },
+    {
+        path: '/department',
+        name: 'DepartmentPage',
+        component: DepartmentPage
+    },
+    {
+        path: '/employee',
+        name: 'EmployeePage',
+        component: EmployeePage
     }
 ]
 

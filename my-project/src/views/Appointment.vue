@@ -14,14 +14,25 @@
                             </router-link>-->
                             <div class="text-md font-raleway tracking-wide">
                                 <p>
-                                    {{ item.attributes.date }}
+                                    Date: {{ item.attributes.date }}
                                 </p>
                                 <p>
-                                    {{ item.attributes.start }}
+                                    Start: {{ item.attributes.start }}
                                 </p>
                                 <p>
-                                    {{ item.attributes.end }}
+                                    End: {{ item.attributes.end }}
                                 </p>
+                                <p>
+                                    Employee: {{ item.attributes.Employee.data.attributes.Name }}
+                                </p>
+                                <p>
+                                    Customer: {{ item.attributes.Customer.data.attributes.Name }}
+                                </p>
+                                <router-link :to='`/bookmark/${item.label}`'>
+                                    <h1 class="text-2xl font-bold font-montserrat mb-5">
+                                        {{ item.label }}
+                                    </h1>
+                                </router-link>
                             </div>
                         </div>
                             
@@ -43,20 +54,6 @@
             return {
                 appointments: []
             }
-        },
-            
-        methods: {
-            // async removeItemFromBookmarks(item) {
-            //     const itemIndex = this.bookmarks.findIndex(bookmarkItem => bookmarkItem.label === item.label)
-                    
-            //     this.bookmarks.splice(itemIndex, 1)
-            //     window.localStorage.setItem('bookmarks', JSON.stringify(this.bookmarks))
-            //     await this.axios.delete(`http://localhost:1337/bookmarks/${item.id}`, {
-            //         headers: {
-            //             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-            //         },
-            //     })
-            // }
         },
         async created() {
             const res = await this.axios.get(`http://localhost:1337/api/appointments?populate=*`, {
