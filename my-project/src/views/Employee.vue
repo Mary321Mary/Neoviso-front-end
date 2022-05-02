@@ -11,19 +11,19 @@
                         <div class="p-5 shadow-lg">
                             <div class="text-md font-raleway tracking-wide">
                                 <p>
-                                    Name: {{ item.attributes.Name }}
+                                    Name: {{ item.Name }}
                                 </p>
                                 <p>
-                                    Email: {{ item.attributes.Email }}
+                                    Email: {{ item.Email }}
                                 </p>
                                 <p>
-                                    Phone: {{ item.attributes.Phone }}
+                                    Phone: {{ item.Phone }}
                                 </p>
                                 <p>
-                                    Address: {{ item.attributes.Address }}
+                                    Address: {{ item.Address }}
                                 </p>
                                 <p>
-                                    Department: {{ item.attributes.Department.data.attributes.Name }}
+                                    Department: {{ item.Department.Name }}
                                 </p>
                                 <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
                                     @click="edit(item.id)">Edit</button>
@@ -41,6 +41,8 @@
 <script>
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
+    import * as socketio from '../plugins/socketio';
+
     export default {
         name: 'EmployeePage',
         components: {
@@ -52,6 +54,15 @@
                 employees: []
             }
         },
+        mounted() {
+            socketio.addEventListener({
+                type: 'employees',
+                callback: (eventData) => {
+                    console.log(eventData.results)
+                    this.employees = eventData.results
+                }
+            });
+        },
         methods: {
             async loadListItem() {
                 const res = await this.axios.get(`http://localhost:1337/api/employees?populate[0]=Department`, {
@@ -59,24 +70,22 @@
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                     },
                 })
-                console.log(res.data.data)
                 this.employees = res.data.data
             },
             remove(empId) {
-                this.axios.delete(`http://localhost:1337/api/employees/${empId}`, {
-                    headers: {
-                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                    },
-                })
-                this.loadListItem()
+                if(confirm("Do you really want to delete?")) {
+                    this.axios.delete(`http://localhost:1337/api/employees/${empId}`, {
+                        headers: {
+                            Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                        },
+                    })
+                    this.loadListItem()
+                }
             },
             edit(empId) {
                 window.localStorage.setItem('empId', empId)
                 this.$router.push('/employee-item')
             }
-        },
-        created() {
-            this.loadListItem()
         }
     }
 </script>

@@ -58,7 +58,7 @@
                         Address: this.department.address
                     }
                 }
-                if (depId != -1) {
+                if (confirm("Are you sure?") && depId != -1) {
                     await this.axios({
                         method: 'PUT',
                         url: `http://localhost:1337/api/departments/${this.department.id}`,

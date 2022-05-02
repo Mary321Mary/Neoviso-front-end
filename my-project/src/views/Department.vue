@@ -11,10 +11,10 @@
                         <div class="p-5 shadow-lg">
                             <div class="text-md font-raleway tracking-wide">
                                 <p>
-                                    Name: {{ item.attributes.Name }}
+                                    Name: {{ item.Name }}
                                 </p>
                                 <p>
-                                    Address: {{ item.attributes.Address }}
+                                    Address: {{ item.Address }}
                                 </p>
                                 <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
                                     @click="edit(item.id)">Edit</button>
@@ -32,6 +32,8 @@
 <script>
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
+    import * as socketio from '../plugins/socketio';
+
     export default {
         name: 'DepartmentPage',
         components: {
@@ -43,6 +45,15 @@
                 departments: []
             }
         },
+        mounted() {
+            socketio.addEventListener({
+                type: 'departments',
+                callback: (eventData) => {
+                    this.departments = eventData.results
+
+                }
+            });
+        },
         methods: {
             async loadListItem() {
                 const res = await this.axios.get(`http://localhost:1337/api/departments`, {
@@ -53,20 +64,19 @@
                 this.departments = res.data.data
             },
             remove(depId) {
-                this.axios.delete(`http://localhost:1337/api/departments/${depId}`, {
-                    headers: {
-                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                    },
-                })
-                this.loadListItem()
+                if(confirm("Do you really want to delete?")) {
+                    this.axios.delete(`http://localhost:1337/api/departments/${depId}`, {
+                        headers: {
+                            Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                        },
+                    })
+                    this.loadListItem()
+                }
             },
             edit(depId) {
                 window.localStorage.setItem('depId', depId)
                 this.$router.push('/department-item')
             }
-        },
-        created() {
-            this.loadListItem()
         }
     }
 </script>

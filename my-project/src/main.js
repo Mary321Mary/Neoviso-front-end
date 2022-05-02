@@ -10,6 +10,8 @@ import { faArrowRight, faArrowLeft, faSearch, faBookmark, faShare, faClock, faCh
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import 'vue-progress-path/dist/vue-progress-path.css'
 import VueProgress from 'vue-progress-path'
+import vuetify from './plugins/vuetify';
+import moment from 'moment';
     
 library.add(faArrowRight, faArrowLeft, faSearch, faBookmark, faShare, faClock, faCheck, faUserCircle, faTrash, faBars, faTimes)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
@@ -18,7 +20,9 @@ Vue.use(VueProgress, {
     // defaultShape: 'circle',
 })
 Vue.config.productionTip = false
+Vue.prototype.moment = moment
 new Vue({
     router,
+    vuetify,
     render: h => h(HomePage)
 }).$mount('#app')
