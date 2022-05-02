@@ -81,7 +81,7 @@
                             department.attributes.Name === this.employee.Department)
                     }
                 }
-                if (empId != -1) {
+                if (confirm("Are you sure?") && empId != -1) {
                     await this.axios({
                         method: 'PUT',
                         url: `http://localhost:1337/api/employees/${this.employee.id}`,

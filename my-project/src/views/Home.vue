@@ -9,26 +9,21 @@
                 <div class="sm:grid sm:grid-cols-3 gap-5 w-4/5 sm:w-3/5 my-5 mx-auto">
                     <div class="mb-5 cursor-pointer" v-for="(item, i) in appointments" :key="i">
                         <div class="p-5 shadow-lg">
-                            <!--<router-link :to='`/bookmark/${item.label}`'>
-                                <h1 class="text-2xl font-bold font-montserrat mb-5">
-                                    {{ item.label }}
-                                </h1>
-                            </router-link>-->
                             <div class="text-md font-raleway tracking-wide">
                                 <p>
-                                    Date: {{ item.attributes.date }}
+                                    Date: {{ item.date }}
                                 </p>
                                 <p>
-                                    Start: {{ getTime(item.attributes.start) }}
+                                    Start: {{ getTime(item.start) }}
                                 </p>
                                 <p>
-                                    End: {{ getTime(item.attributes.end) }}
+                                    End: {{ getTime(item.end) }}
                                 </p>
                                 <p>
-                                    Employee: {{ item.attributes.Employee.data.attributes.Name }}
+                                    Employee: {{ item.Employee.data.Name }}
                                 </p>
                                 <p>
-                                    Customer: {{ item.attributes.Customer.data.attributes.Name }}
+                                    Customer: {{ item.Customer.data.Name }}
                                 </p>
                                 <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
                                     @click="edit(item.id)">Edit</button>
@@ -50,6 +45,7 @@
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
     import PaginationComp from '@/components/Pagination'
+    import * as socketio from '../plugins/socketio';
     
     export default {
         name: 'HomePage',
@@ -66,6 +62,16 @@
                 totalRecords: 0,
                 recordsPerPage: 3
             }
+        },
+        mounted() {
+            socketio.addEventListener({
+                type: 'appointments',
+                callback: (eventData) => {
+                    this.appointments = eventData.results
+                    this.totalPages = eventData.pagination.pageCount
+                    this.totalRecords = eventData.pagination.total
+                }
+            });
         },
         methods: {
             async loadListItem() {
@@ -88,12 +94,14 @@
                 return newTime
             },
             remove(appointId) {
-                this.axios.delete(`http://localhost:1337/api/appointments/${appointId}`, {
-                    headers: {
-                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                    },
-                })
-                this.loadListItem()
+                if(confirm("Do you really want to delete?")) {
+                    this.axios.delete(`http://localhost:1337/api/appointments/${appointId}`, {
+                        headers: {
+                            Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                        },
+                    })
+                    this.loadListItem()
+                }
             },
             edit(appointId) {
                 window.localStorage.setItem('appointId', appointId)

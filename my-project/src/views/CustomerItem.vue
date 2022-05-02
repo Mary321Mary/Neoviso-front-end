@@ -70,7 +70,7 @@
                         Address: this.customer.address
                     }
                 }
-                if (cusId != -1) {
+                if (confirm("Are you sure?") && cusId != -1) {
                     await this.axios({
                         method: 'PUT',
                         url: `http://localhost:1337/api/customers/${this.customer.id}`,

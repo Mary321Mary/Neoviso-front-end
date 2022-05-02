@@ -87,7 +87,7 @@
                     }
                 }
                 console.log(requestOptions)
-                if (appointId != -1) {
+                if (confirm("Are you sure?") && appointId != -1) {
                     await this.axios({
                         method: 'PUT',
                         url: `http://localhost:1337/api/appointments/${this.appointment.id}`,
