@@ -23,5 +23,6 @@ export function addEventListener(event) {
 }
 
 export function sendEvent(event) {
-    socket.emit(event.type, event.data);
+    console.log('sendEvent')
+    socket.emit(event.type);
 }
