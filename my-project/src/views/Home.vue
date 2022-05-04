@@ -11,19 +11,19 @@
                         <div class="p-5 shadow-lg">
                             <div class="text-md font-raleway tracking-wide">
                                 <p>
-                                    Date: {{ item.date }}
+                                    Date: {{ item.attributes.date }}
                                 </p>
                                 <p>
-                                    Start: {{ getTime(item.start) }}
+                                    Start: {{ getTime(item.attributes.start) }}
                                 </p>
                                 <p>
-                                    End: {{ getTime(item.end) }}
+                                    End: {{ getTime(item.attributes.end) }}
                                 </p>
                                 <p>
-                                    Employee: {{ item.Employee.data.Name }}
+                                    Employee: {{ item.attributes.Employee.attributes.Name }}
                                 </p>
                                 <p>
-                                    Customer: {{ item.Customer.data.Name }}
+                                    Customer: {{ item.attributes.Customer.attributes.Name }}
                                 </p>
                                 <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
                                     @click="edit(item.id)">Edit</button>
@@ -41,7 +41,6 @@
     </div>
 </template>
 <script>
-// @ is an alias to /src
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
     import PaginationComp from '@/components/Pagination'
@@ -66,10 +65,8 @@
         mounted() {
             socketio.addEventListener({
                 type: 'appointments',
-                callback: (eventData) => {
-                    this.appointments = eventData.results
-                    this.totalPages = eventData.pagination.pageCount
-                    this.totalRecords = eventData.pagination.total
+                callback: () => {
+                    this.loadListItem()
                 }
             });
         },
@@ -100,7 +97,9 @@
                             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                         },
                     })
-                    this.loadListItem()
+                    socketio.sendEvent({
+                        type: 'departments'
+                    });
                 }
             },
             edit(appointId) {

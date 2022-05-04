@@ -11,19 +11,19 @@
                         <div class="p-5 shadow-lg">
                             <div class="text-md font-raleway tracking-wide">
                                 <p>
-                                    Name: {{ item.Name }}
+                                    Name: {{ item.attributes.Name }}
                                 </p>
                                 <p>
-                                    Email: {{ item.Email }}
+                                    Email: {{ item.attributes.Email }}
                                 </p>
                                 <p>
-                                    Phone: {{ item.Phone }}
+                                    Phone: {{ item.attributes.Phone }}
                                 </p>
                                 <p>
-                                    Address: {{ item.Address }}
+                                    Address: {{ item.attributes.Address }}
                                 </p>
                                 <p>
-                                    Department: {{ item.Department.Name }}
+                                    Department: {{ item.attributes.Department.attributes.Name }}
                                 </p>
                                 <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
                                     @click="edit(item.id)">Edit</button>
@@ -57,9 +57,8 @@
         mounted() {
             socketio.addEventListener({
                 type: 'employees',
-                callback: (eventData) => {
-                    console.log(eventData.results)
-                    this.employees = eventData.results
+                callback: () => {
+                    this.loadListItem()
                 }
             });
         },
@@ -79,13 +78,18 @@
                             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                         },
                     })
-                    this.loadListItem()
+                    socketio.sendEvent({
+                        type: 'departments'
+                    });
                 }
             },
             edit(empId) {
                 window.localStorage.setItem('empId', empId)
                 this.$router.push('/employee-item')
             }
+        },
+        created() {
+            this.loadListItem()
         }
     }
 </script>
