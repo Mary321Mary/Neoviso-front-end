@@ -16,11 +16,11 @@
 
                             <label for="email">Email </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
-                                type="email" v-model="customer.Email" id="email" name="email" required > <br> <br>
+                                type="email" v-model="customer.email" id="email" name="email" required > <br> <br>
 
                             <label for="phone">Phone </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
-                                type="text" v-model="customer.Phone" id="phone" name="phone" required > <br> <br>
+                                type="text" v-model="customer.phone" id="phone" name="phone" required > <br> <br>
                             
                             <label for="address">Address </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
@@ -40,14 +40,6 @@
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
 
-    var temp = Object.freeze({
-        id: '',
-        name: '',
-        Email: '',
-        Phone: '',
-        address: ''
-    });
-
     export default {
         name: 'CustomerItem',
         components: {
@@ -56,24 +48,30 @@
         },
         data() {
             return {
-                customer: Object.assign({}, temp)
+                customer: {
+                    id: '',
+                    name: '',
+                    email: '',
+                    phone: '',
+                    address: ''
+                }
             };
         },
         methods: {
             async submitCustomer() {
-                var cusId = window.localStorage.getItem('cusId')
+                let cusId = window.localStorage.getItem('cusId')
                 const requestOptions = {
                     data: {
                         Name: this.customer.name,
-                        Email: this.customer.Email,
-                        Phone: this.customer.Phone,
+                        Email: this.customer.email,
+                        Phone: this.customer.phone,
                         Address: this.customer.address
                     }
                 }
                 if (confirm("Are you sure?") && cusId != -1) {
-                    await this.axios({
+                    await window.axios({
                         method: 'PUT',
-                        url: `http://localhost:1337/api/customers/${this.customer.id}`,
+                        url: `customers/${this.customer.id}`,
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -81,9 +79,9 @@
                         }
                     })
                 } else {
-                    await this.axios({
+                    await window.axios({
                         method: 'POST',
-                        url: 'http://localhost:1337/api/customers',
+                        url: 'customers',
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -95,9 +93,9 @@
             }
         },
         async created() {
-            var cusId = window.localStorage.getItem('cusId')
+            let cusId = window.localStorage.getItem('cusId')
             if (cusId != -1) {
-                const res = await this.axios.get(`http://localhost:1337/api/customers/${cusId}`, {
+                const res = await window.axios.get(`customers/${cusId}`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                     }
@@ -105,7 +103,7 @@
                 this.customer = res.data.data
             }
         }
-    };
+    }
 </script>
 <style scoped>
 </style>

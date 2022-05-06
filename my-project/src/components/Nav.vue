@@ -18,7 +18,7 @@
                     EMPLOYEES
                 </router-link>
                 <router-link to="/" v-if="user">
-                    USERNAME: {{ user.username }}
+                    USERNAME: {{ user }}
                 </router-link>
                 <span @click="logout">
                     <router-link to="" v-if="user">LOGOUT</router-link>  
@@ -37,12 +37,11 @@
             }
         },
         mounted() {
-            this.user = JSON.parse(window.localStorage.getItem('userData'))
+            this.user = 'userData'
         },
         methods: {
             logout() {
                 window.localStorage.removeItem('jwt')
-                window.localStorage.removeItem('userData')
                 this.$router.push('/login')
             }
         }

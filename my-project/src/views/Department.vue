@@ -49,14 +49,13 @@
             socketio.addEventListener({
                 type: 'departments',
                 callback: () => {
-                    console.log("mounted");
                     this.loadListItem()
                 }
             });
         },
         methods: {
             async loadListItem() {
-                const res = await this.axios.get(`http://localhost:1337/api/departments`, {
+                const res = await window.axios.get(`departments`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                     },
@@ -65,7 +64,7 @@
             },
             remove(depId) {
                 if(confirm("Do you really want to delete?")) {
-                    this.axios.delete(`http://localhost:1337/api/departments/${depId}`, {
+                    window.axios.delete(`departments/${depId}`, {
                         headers: {
                             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                         },
@@ -81,7 +80,6 @@
             }
         },
         created() {
-            console.log("created");
             this.loadListItem()
         }
     }

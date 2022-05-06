@@ -27,16 +27,9 @@
         <FooterComp />
     </div>
 </template>
-
 <script>
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
-
-    var temp = Object.freeze({
-        id: '',
-        name: '',
-        address: ''
-    });
 
     export default {
         name: 'DepartmentItem',
@@ -46,12 +39,16 @@
         },
         data() {
             return {
-                department: Object.assign({}, temp)
+                department: {
+                    id: '',
+                    name: '',
+                    address: ''
+                }
             };
         },
         methods: {
             async submitDepartment() {
-                var depId = window.localStorage.getItem('depId')
+                let depId = window.localStorage.getItem('depId')
                 const requestOptions = {
                     data: {
                         Name: this.department.name,
@@ -59,9 +56,9 @@
                     }
                 }
                 if (confirm("Are you sure?") && depId != -1) {
-                    await this.axios({
+                    await window.axios({
                         method: 'PUT',
-                        url: `http://localhost:1337/api/departments/${this.department.id}`,
+                        url: `departments/${this.department.id}`,
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -69,9 +66,9 @@
                         }
                     })
                 } else {
-                    await this.axios({
+                    await window.axios({
                         method: 'POST',
-                        url: 'http://localhost:1337/api/departments',
+                        url: 'departments',
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -83,10 +80,10 @@
             }
         },
         async created() {
-            var depId = window.localStorage.getItem('depId')
+            let depId = window.localStorage.getItem('depId')
             console.log(depId)
             if (depId != -1) {
-                const res = await this.axios.get(`http://localhost:1337/api/departments/${depId}`, {
+                const res = await window.axios.get(`departments/${depId}`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                     }
@@ -94,7 +91,7 @@
                 this.department = res.data.data
             }
         }
-    };
+    }
 </script>
 <style scoped>
 </style>
