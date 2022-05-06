@@ -18,7 +18,7 @@
                     EMPLOYEES
                 </router-link>
                 <router-link to="/" v-if="user">
-                    USERNAME: {{ user.username }}
+                    USERNAME: {{ user }}
                 </router-link>
                 <span @click="logout">
                     <router-link to="" v-if="user">LOGOUT</router-link>  

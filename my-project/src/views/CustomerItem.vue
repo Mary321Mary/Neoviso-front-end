@@ -69,9 +69,9 @@
                     }
                 }
                 if (confirm("Are you sure?") && cusId != -1) {
-                    await this.axios({
+                    await window.axios({
                         method: 'PUT',
-                        url: `http://localhost:1337/api/customers/${this.customer.id}`,
+                        url: `customers/${this.customer.id}`,
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -79,9 +79,9 @@
                         }
                     })
                 } else {
-                    await this.axios({
+                    await window.axios({
                         method: 'POST',
-                        url: 'http://localhost:1337/api/customers',
+                        url: 'customers',
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -95,7 +95,7 @@
         async created() {
             let cusId = window.localStorage.getItem('cusId')
             if (cusId != -1) {
-                const res = await this.axios.get(`http://localhost:1337/api/customers/${cusId}`, {
+                const res = await window.axios.get(`customers/${cusId}`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                     }

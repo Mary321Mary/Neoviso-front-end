@@ -56,9 +56,9 @@
                     }
                 }
                 if (confirm("Are you sure?") && depId != -1) {
-                    await this.axios({
+                    await window.axios({
                         method: 'PUT',
-                        url: `http://localhost:1337/api/departments/${this.department.id}`,
+                        url: `departments/${this.department.id}`,
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -66,9 +66,9 @@
                         }
                     })
                 } else {
-                    await this.axios({
+                    await window.axios({
                         method: 'POST',
-                        url: 'http://localhost:1337/api/departments',
+                        url: 'departments',
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -83,7 +83,7 @@
             let depId = window.localStorage.getItem('depId')
             console.log(depId)
             if (depId != -1) {
-                const res = await this.axios.get(`http://localhost:1337/api/departments/${depId}`, {
+                const res = await window.axios.get(`departments/${depId}`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                     }

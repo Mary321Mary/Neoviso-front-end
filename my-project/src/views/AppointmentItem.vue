@@ -85,9 +85,9 @@
                 }
                 console.log(requestOptions)
                 if (confirm("Are you sure?") && appointId != -1) {
-                    await this.axios({
+                    await window.axios({
                         method: 'PUT',
-                        url: `http://localhost:1337/api/appointments/${this.appointment.id}`,
+                        url: `appointments/${this.appointment.id}`,
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -95,9 +95,9 @@
                         }
                     })
                 } else {
-                    await this.axios({
+                    await window.axios({
                         method: 'POST',
-                        url: 'http://localhost:1337/api/appointments',
+                        url: 'appointments',
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -109,14 +109,14 @@
             }
         },
         async created() {
-            let res = await this.axios.get(`http://localhost:1337/api/customers`, {
+            let res = await window.axios.get(`customers`, {
                 headers: {
                     Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                 },
             })
             this.customers = res.data.data
 
-            res = await this.axios.get(`http://localhost:1337/api/employees?populate[0]=Department`, {
+            res = await window.axios.get(`employees?populate[0]=Department`, {
                 headers: {
                     Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                 },
@@ -125,7 +125,7 @@
 
             let appointId = window.localStorage.getItem('appointId')
             if (appointId != -1) {
-                res = await this.axios.get(`http://localhost:1337/api/appointments/${appointId}`, {
+                res = await window.axios.get(`appointments/${appointId}`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                     }

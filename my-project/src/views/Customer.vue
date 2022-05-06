@@ -69,7 +69,7 @@
         },
         methods: {
             async loadListItem() {
-                const res = await this.axios.get(`http://localhost:1337/api/customers?` + 
+                const res = await window.axios.get(`customers?` + 
                     `pagination[page]=${this.page}&pagination[pageSize]=${this.recordsPerPage}`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
@@ -85,7 +85,7 @@
             },
             remove(cusId) {
                 if(confirm("Do you really want to delete?")) {
-                    this.axios.delete(`http://localhost:1337/api/customers/${cusId}`, {
+                    window.axios.delete(`customers/${cusId}`, {
                         headers: {
                             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                         },

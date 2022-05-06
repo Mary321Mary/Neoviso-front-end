@@ -72,7 +72,7 @@
         },
         methods: {
             async loadListItem() {
-                const res = await this.axios.get(`http://localhost:1337/api/appointments?populate=*&` + 
+                const res = await window.axios.get(`appointments?populate=*&` + 
                     `pagination[page]=${this.page}&pagination[pageSize]=${this.recordsPerPage}`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
@@ -92,7 +92,7 @@
             },
             remove(appointId) {
                 if(confirm("Do you really want to delete?")) {
-                    this.axios.delete(`http://localhost:1337/api/appointments/${appointId}`, {
+                    window.axios.delete(`appointments/${appointId}`, {
                         headers: {
                             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                         },

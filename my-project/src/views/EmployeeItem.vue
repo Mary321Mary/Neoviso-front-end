@@ -79,9 +79,9 @@
                     }
                 }
                 if (confirm("Are you sure?") && empId != -1) {
-                    await this.axios({
+                    await window.axios({
                         method: 'PUT',
-                        url: `http://localhost:1337/api/employees/${this.employee.id}`,
+                        url: `employees/${this.employee.id}`,
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -89,9 +89,9 @@
                         }
                     })
                 } else {
-                    await this.axios({
+                    await window.axios({
                         method: 'POST',
-                        url: 'http://localhost:1337/api/employees',
+                        url: 'employees',
                         data: JSON.stringify(requestOptions),
                         headers: {
                             'Content-Type': 'application/json',
@@ -103,7 +103,7 @@
             }
         },
         async created() {
-            var res = await this.axios.get(`http://localhost:1337/api/departments`, {
+            var res = await window.axios.get(`departments`, {
                 headers: {
                     Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                 },
@@ -112,7 +112,7 @@
 
             var empId = window.localStorage.getItem('empId')
             if (empId != -1) {
-                res = await this.axios.get(`http://localhost:1337/api/employees/${empId}`, {
+                res = await window.axios.get(`employees/${empId}`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                     }

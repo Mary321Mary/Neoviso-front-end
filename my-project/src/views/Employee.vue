@@ -64,7 +64,7 @@
         },
         methods: {
             async loadListItem() {
-                const res = await this.axios.get(`http://localhost:1337/api/employees?populate[0]=Department`, {
+                const res = await window.axios.get(`employees?populate[0]=Department`, {
                     headers: {
                         Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                     },
@@ -73,7 +73,7 @@
             },
             remove(empId) {
                 if(confirm("Do you really want to delete?")) {
-                    this.axios.delete(`http://localhost:1337/api/employees/${empId}`, {
+                    window.axios.delete(`employees/${empId}`, {
                         headers: {
                             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                         },
