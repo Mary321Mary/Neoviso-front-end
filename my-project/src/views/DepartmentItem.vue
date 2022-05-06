@@ -27,16 +27,9 @@
         <FooterComp />
     </div>
 </template>
-
 <script>
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
-
-    var temp = Object.freeze({
-        id: '',
-        name: '',
-        address: ''
-    });
 
     export default {
         name: 'DepartmentItem',
@@ -46,12 +39,16 @@
         },
         data() {
             return {
-                department: Object.assign({}, temp)
+                department: {
+                    id: '',
+                    name: '',
+                    address: ''
+                }
             };
         },
         methods: {
             async submitDepartment() {
-                var depId = window.localStorage.getItem('depId')
+                let depId = window.localStorage.getItem('depId')
                 const requestOptions = {
                     data: {
                         Name: this.department.name,
@@ -83,7 +80,7 @@
             }
         },
         async created() {
-            var depId = window.localStorage.getItem('depId')
+            let depId = window.localStorage.getItem('depId')
             console.log(depId)
             if (depId != -1) {
                 const res = await this.axios.get(`http://localhost:1337/api/departments/${depId}`, {
@@ -94,7 +91,7 @@
                 this.department = res.data.data
             }
         }
-    };
+    }
 </script>
 <style scoped>
 </style>

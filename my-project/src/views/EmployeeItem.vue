@@ -16,18 +16,18 @@
 
                             <label for="email">Email </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
-                                type="email" v-model="employee.Email" id="email" name="email" required > <br> <br>
+                                type="email" v-model="employee.email" id="email" name="email" required > <br> <br>
 
                             <label for="phone">Phone </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
-                                type="text" v-model="employee.Phone" id="phone" name="phone" required > <br> <br>
+                                type="text" v-model="employee.phone" id="phone" name="phone" required > <br> <br>
                             
                             <label for="address">Address </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
                                 type="text" v-model="employee.address" id="address" name="address" required > <br> <br>
 
                             <label for="department">Department </label>
-                            <select v-model="employee.Department" name="department">
+                            <select v-model="employee.department" name="department">
                                 <option v-for="(item, i) in departments" :key="i" id="department" name="department">
                                     {{ item.attributes.Name }}
                                 </option>
@@ -42,19 +42,9 @@
         <FooterComp />
     </div>
 </template>
-
 <script>
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
-
-    var temp = Object.freeze({
-        id: '',
-        name: '',
-        Email: '',
-        Phone: '',
-        address: '',
-        Department: ''
-    });
 
     export default {
         name: 'EmployeeItem',
@@ -64,7 +54,14 @@
         },
         data() {
             return {
-                employee: Object.assign({}, temp),
+                employee: {
+                    id: '',
+                    name: '',
+                    email: '',
+                    phone: '',
+                    address: '',
+                    department: ''
+                },
                 departments: []
             };
         },
@@ -74,11 +71,11 @@
                 const requestOptions = {
                     data: {
                         Name: this.employee.name,
-                        Email: this.employee.Email,
-                        Phone: this.employee.Phone,
+                        Email: this.employee.email,
+                        Phone: this.employee.phone,
                         Address: this.employee.address,
                         Department: this.departments.find(department => 
-                            department.attributes.Name === this.employee.Department)
+                            department.attributes.Name === this.employee.department)
                     }
                 }
                 if (confirm("Are you sure?") && empId != -1) {
@@ -123,7 +120,7 @@
                 this.department = res.data.data
             }
         }
-    };
+    }
 </script>
 <style scoped>
 </style>

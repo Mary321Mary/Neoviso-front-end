@@ -49,7 +49,6 @@
             socketio.addEventListener({
                 type: 'departments',
                 callback: () => {
-                    console.log("mounted");
                     this.loadListItem()
                 }
             });
@@ -81,7 +80,6 @@
             }
         },
         created() {
-            console.log("created");
             this.loadListItem()
         }
     }

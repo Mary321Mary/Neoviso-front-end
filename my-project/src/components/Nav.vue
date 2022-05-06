@@ -37,12 +37,11 @@
             }
         },
         mounted() {
-            this.user = JSON.parse(window.localStorage.getItem('userData'))
+            this.user = 'userData'
         },
         methods: {
             logout() {
                 window.localStorage.removeItem('jwt')
-                window.localStorage.removeItem('userData')
                 this.$router.push('/login')
             }
         }

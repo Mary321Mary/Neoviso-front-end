@@ -17,7 +17,7 @@
         name: 'FooterComp',
         data() {
             return {
-            date: new Date().getFullYear()
+                date: new Date().getFullYear()
             }
         }
     }

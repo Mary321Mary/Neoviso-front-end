@@ -23,14 +23,14 @@
                                 type="time" v-model="appointment.end" id="end" name="end" required > <br> <br>
                             
                             <label for="employee">Employee </label>
-                            <select v-model="appointment.Employee" name="employee">
+                            <select v-model="appointment.employee" name="employee">
                                 <option v-for="(item, i) in employees" :key="i" id="employee" name="employee">
                                     {{ item.attributes.Name }}
                                 </option>
                             </select> <br> <br>
 
                             <label for="customer">Customer </label>
-                            <select v-model="appointment.Customer" name="customer">
+                            <select v-model="appointment.customer" name="customer">
                                 <option v-for="(item, i) in customers" :key="i" id="customer" name="customer">
                                     {{ item.attributes.Name }}
                                 </option>
@@ -45,19 +45,9 @@
         <FooterComp />
     </div>
 </template>
-
 <script>
     import NavComp from '@/components/Nav.vue'
     import FooterComp from '@/components/Footer.vue'
-
-    var temp = Object.freeze({
-        id: '',
-        date: '',
-        start: '',
-        end: '',
-        Employee: '',
-        Customer: ''
-    });
 
     export default {
         name: 'AppointmentItem',
@@ -67,23 +57,30 @@
         },
         data() {
             return {
-                appointment: Object.assign({}, temp),
+                appointment: {
+                    id: '',
+                    date: '',
+                    start: '',
+                    end: '',
+                    employee: '',
+                    customer: ''
+                },
                 employees: [],
                 customers: []
             };
         },
         methods: {
             async submitAppointment() {
-                var appointId = window.localStorage.getItem('appointId')
+                let appointId = window.localStorage.getItem('appointId')
                 const requestOptions = {
                     data: {
                         date: this.appointment.date,
                         start: this.appointment.start + ":00.000",
                         end: this.appointment.end + ":00.000",
                         Employee: this.employees.find(employee => 
-                            employee.attributes.Name === this.appointment.Employee),
+                            employee.attributes.Name === this.appointment.employee),
                         Customer: this.customers.find(customer => 
-                            customer.attributes.Name === this.appointment.Customer)
+                            customer.attributes.Name === this.appointment.customer)
                     }
                 }
                 console.log(requestOptions)
@@ -112,7 +109,7 @@
             }
         },
         async created() {
-            var res = await this.axios.get(`http://localhost:1337/api/customers`, {
+            let res = await this.axios.get(`http://localhost:1337/api/customers`, {
                 headers: {
                     Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
                 },
@@ -126,7 +123,7 @@
             })
             this.employees = res.data.data
 
-            var appointId = window.localStorage.getItem('appointId')
+            let appointId = window.localStorage.getItem('appointId')
             if (appointId != -1) {
                 res = await this.axios.get(`http://localhost:1337/api/appointments/${appointId}`, {
                     headers: {
@@ -136,7 +133,7 @@
                 this.appointment = res.data.data
             }
         }
-    };
+    }
 </script>
 <style scoped>
 </style>
