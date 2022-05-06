@@ -6,3 +6,5 @@ const axios = axiosApi.create({
 
 //Use the window object to make it available globally.
 window.axios = axios;
+
+export default axios

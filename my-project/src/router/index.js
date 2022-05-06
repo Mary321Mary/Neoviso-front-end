@@ -1,8 +1,4 @@
-import { createApp } from 'vue'
-import {createRouter, createWebHistory} from 'vue-router'
-import axios from 'axios'
-import vueAxios from 'vue-axios'
-import App from '../App.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../views/Home.vue'
 import LoginPage from '../views/Login.vue'
 import CustomerPage from '../views/Customer.vue'
@@ -66,4 +62,4 @@ const router = createRouter({
     routes
 })
 
-createApp(App).use(router).use(vueAxios, axios).mount('#app')
+export default router
