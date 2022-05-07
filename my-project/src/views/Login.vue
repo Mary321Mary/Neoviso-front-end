@@ -50,8 +50,9 @@
                         identifier: this.email,
                         password: this.password
                     });
-                    const jwt = res.data.jwt
+                    const { jwt, user } = res.data
                     window.localStorage.setItem('jwt', jwt)
+                    window.localStorage.setItem('id', user.id)
                     this.$router.push('/')
                 } catch(error) {
                     this.error = true

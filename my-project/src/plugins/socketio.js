@@ -24,5 +24,8 @@ export function addEventListener(event) {
 
 export function sendEvent(event) {
     console.log('sendEvent')
-    socket.emit(event.type);
+    if (!socket) {
+        initialiseSocket();
+    }
+    socket.emit(event.type, event.data);
 }
