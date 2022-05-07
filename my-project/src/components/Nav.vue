@@ -11,14 +11,14 @@
                 <router-link to="/customer" v-if="user">
                     CUSTOMERS
                 </router-link>
-                <router-link to="/department" v-if="user">
+                <router-link to="/department" v-if="user.role != 'Reception'">
                     DEPARTMENTS
                 </router-link>
-                <router-link to="/employee" v-if="user">
+                <router-link to="/employee" v-if="user.role != 'Reception'">
                     EMPLOYEES
                 </router-link>
                 <router-link to="/" v-if="user">
-                    USERNAME: {{ user }}
+                    USERNAME: {{ user.username }}
                 </router-link>
                 <span @click="logout">
                     <router-link to="" v-if="user">LOGOUT</router-link>  
@@ -29,6 +29,8 @@
 </template>
 <script>
     // import { mapGetters } from 'vuex'
+    import * as socketio from '../plugins/socketio'
+
     export default {
         name: 'NavComp',
         data() {
@@ -37,11 +39,25 @@
             }
         },
         mounted() {
-            this.user = 'userData'
+            socketio.sendEvent({
+                type: 'user',
+                data: {
+                    id: window.localStorage.getItem('id')
+                }
+            });
+            socketio.addEventListener({
+                type: 'user',
+                callback: (data) => {
+                    this.user = data
+                    window.localStorage.setItem('role', this.user.role)
+                }
+            });
         },
         methods: {
             logout() {
                 window.localStorage.removeItem('jwt')
+                window.localStorage.removeItem('id')
+                window.localStorage.removeItem('role')
                 this.$router.push('/login')
             }
         }
