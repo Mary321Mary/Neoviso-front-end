@@ -7,58 +7,45 @@
             <!-- desktop view -->
             <div class="flex bg-white space-x-12 hidden sm:block text-black-200 font-raleway tracking-wide items-center">
                 <router-link to="/">HOME</router-link> 
-                <router-link to="/login" v-if="!user">LOGIN</router-link>
-                <router-link to="/customer" v-if="user">
+                <router-link to="/login" v-if="!getUser">LOGIN</router-link>
+                <router-link to="/customer" v-if="getUser">
                     CUSTOMERS
                 </router-link>
-                <router-link to="/department" v-if="user.role != 'Reception'">
+                <router-link to="/department" v-if="(getRole != 'Reception') && getUser">
                     DEPARTMENTS
                 </router-link>
-                <router-link to="/employee" v-if="user.role != 'Reception'">
+                <router-link to="/employee" v-if="(getRole != 'Reception') && getUser">
                     EMPLOYEES
                 </router-link>
-                <router-link to="/" v-if="user">
-                    USERNAME: {{ user.username }}
+                <router-link to="/" v-if="getUser">
+                    USERNAME: {{ getUser }}
                 </router-link>
                 <span @click="logout">
-                    <router-link to="" v-if="user">LOGOUT</router-link>  
+                    <router-link to="" v-if="getUser">LOGOUT</router-link>  
                 </span>
             </div>
         </div>
     </div>
 </template>
 <script>
-    // import { mapGetters } from 'vuex'
-    import * as socketio from '../plugins/socketio'
+    import store from '../store/index'
 
     export default {
         name: 'NavComp',
-        data() {
-            return {
-                user: {}
-            }
-        },
-        mounted() {
-            socketio.sendEvent({
-                type: 'user',
-                data: {
-                    id: window.localStorage.getItem('id')
-                }
-            });
-            socketio.addEventListener({
-                type: 'user',
-                callback: (data) => {
-                    this.user = data
-                    window.localStorage.setItem('role', this.user.role)
-                }
-            });
-        },
         methods: {
             logout() {
                 window.localStorage.removeItem('jwt')
-                window.localStorage.removeItem('id')
-                window.localStorage.removeItem('role')
                 this.$router.push('/login')
+            }
+        },
+        computed: {
+            getUser() {
+                console.log(store.getters.getUser)
+                return store.getters.getUser;
+            },
+            getRole() {
+                console.log(store.getters.getRole)
+                return store.getters.getRole
             }
         }
     }

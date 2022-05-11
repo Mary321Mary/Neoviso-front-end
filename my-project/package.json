@@ -21,7 +21,8 @@
     "vue-progress-path": "0.0.2",
     "vue-router": "^4.0.14",
     "vuetify": "^2.6.4",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
