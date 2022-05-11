@@ -32,6 +32,9 @@
     </div>
 </template>
 <script>
+    import { mapActions } from 'vuex'
+    import store from '../store/index'
+    
     export default {
         name: 'LoginPage',
         data() {
@@ -43,6 +46,7 @@
             }
         },
         methods: {
+            ...mapActions(['fetchUser']),
             async login(e) {
                 e.preventDefault()
                 try {
@@ -50,9 +54,9 @@
                         identifier: this.email,
                         password: this.password
                     });
-                    const { jwt, user } = res.data
+                    const jwt = res.data.jwt
                     window.localStorage.setItem('jwt', jwt)
-                    window.localStorage.setItem('id', user.id)
+                    store.dispatch('fetchUser')
                     this.$router.push('/')
                 } catch(error) {
                     this.error = true
