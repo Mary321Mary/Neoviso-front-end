@@ -1,10 +1,12 @@
 import * as socketio from '../plugins/socketio'
 
 const state = {
+    id: '',
     user: '',
     role: ''
 }
 const getters = {
+    getUserId: state => state.id,
     getUser: state => state.user,
     getRole: state => state.role
 }
@@ -27,8 +29,8 @@ const actions = {
                 commit('updateRole', data.role)
             }
         });
-        let results = res.data.username
-        commit('updateUser', results)
+        commit('updateUser', res.data.username)
+        commit('updateUserId', res.data.id)
     }
 }
 const mutations = {
@@ -41,6 +43,11 @@ const mutations = {
         state.role = results
         console.log('updateRole')
         console.log(state.role)
+    },
+    updateUserId: (state, results) => {
+        state.id = results
+        console.log('updateUserId')
+        console.log(state.id)
     }
 }
 export default {

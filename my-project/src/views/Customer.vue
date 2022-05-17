@@ -4,7 +4,7 @@
         <section>
             <h1 class="mt-32 mb-4 ml-4 font-montserrat font-bold text-4xl">Customer</h1>
             <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
-                @click="edit(-1)" v-if="role != 'Doctor'">Add customer</button>
+                @click="edit(-1)" v-if="getRole != 'Doctor'">Add customer</button>
             <div v-if="customers.length > 0">
                 <div class="sm:grid sm:grid-cols-3 gap-5 w-4/5 sm:w-3/5 my-5 mx-auto">
                     <div  class="mb-5 cursor-pointer" v-for="(item, i) in customers" :key="i">
@@ -23,9 +23,9 @@
                                     Address: {{ item.Address }}
                                 </p>
                                 <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
-                                    @click="edit(item.id)" v-if="role != 'Doctor'">Edit</button>
+                                    @click="edit(item.id)" v-if="getRole != 'Doctor'">Edit</button>
                                 <button class="flex-no-shrink p-2 mt-2 ml-2 border-2 rounded text-red border-red hover:bg-red"
-                                    @click="remove(item.id)" v-if="role != 'Doctor'">Remove</button>
+                                    @click="remove(item.id)" v-if="getRole != 'Doctor'">Remove</button>
                             </div>
                         </div>
                     </div>
@@ -42,6 +42,7 @@
     import FooterComp from '@/components/Footer.vue'
     import PaginationComp from '@/components/Pagination'
     import * as socketio from '../plugins/socketio'
+    import store from '../store/index'
 
     export default {
         name: 'CustomerPage',
@@ -56,16 +57,15 @@
                 page: 1,
                 totalPages: 0,
                 totalRecords: 0,
-                recordsPerPage: 3,
-                role: window.localStorage.getItem('role')
+                recordsPerPage: 3
             }
         },
         mounted() {
-            if(this.role == 'Reception') {
+            if(this.getRole == 'Reception') {
                 socketio.sendEvent({
                     type: 'customer',
                     data: {
-                        id: window.localStorage.getItem('id')
+                        id: this.getUserId
                     }
                 });
                 socketio.addEventListener({
@@ -106,11 +106,11 @@
             // },
             onPageChange(page) {
                 this.page = page
-                if(this.role == 'Reception') {
+                if(this.getRole == 'Reception') {
                     socketio.sendEvent({
                         type: 'customer',
                         data: {
-                            id: window.localStorage.getItem('id')
+                            id: this.getUserId
                         }
                     });
                 } else {
@@ -130,11 +130,11 @@
                             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`
                         }
                     }).then(() => {
-                        if(this.role == 'Reception') {
+                        if(this.getRole == 'Reception') {
                             socketio.sendEvent({
                                 type: 'customer',
                                 data: {
-                                    id: window.localStorage.getItem('id')
+                                    id: this.getUserId
                                 }
                             });
                         } else {
@@ -152,6 +152,14 @@
             edit(cusId) {
                 window.localStorage.setItem('cusId', cusId)
                 this.$router.push('/customer-item')
+            }
+        },
+        computed: {
+            getRole() {
+                return store.getters.getRole
+            },
+            getUserId() {
+                return store.getters.getUserId
             }
         }
     }
