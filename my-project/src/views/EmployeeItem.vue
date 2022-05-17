@@ -18,9 +18,10 @@
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
                                 type="email" v-model="employee.email" id="email" name="email" required > <br> <br>
 
-                            <label for="phone">Phone </label>
+                            <label for="phone">Phone (+375(25|29|33|44)222-33-44) </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
-                                type="text" v-model="employee.phone" id="phone" name="phone" required > <br> <br>
+                                type="tel" v-model="employee.phone" id="phone" name="phone"
+                                pattern="^\\+375\\((?:25|29|33|44)\\)\\d{3}-\\d{2}-\\d{2}$" required > <br> <br>
                             
                             <label for="address">Address </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
@@ -65,6 +66,24 @@
                 departments: []
             };
         },
+        async mounted() {
+            var res = await window.axios.get(`departments`, {
+                headers: {
+                    Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                },
+            })
+            this.departments = res.data.data
+
+            var empId = window.localStorage.getItem('empId')
+            if (empId != -1) {
+                res = await window.axios.get(`employees/${empId}`, {
+                    headers: {
+                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                    }
+                })
+                this.employee = res.data.data
+            }
+        },
         methods: {
             async submitEmployee() {
                 var empId = window.localStorage.getItem('empId')
@@ -100,24 +119,6 @@
                     })
                 }
                 this.$router.push("/employee");
-            }
-        },
-        async created() {
-            var res = await window.axios.get(`departments`, {
-                headers: {
-                    Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                },
-            })
-            this.departments = res.data.data
-
-            var empId = window.localStorage.getItem('empId')
-            if (empId != -1) {
-                res = await window.axios.get(`employees/${empId}`, {
-                    headers: {
-                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                    }
-                })
-                this.department = res.data.data
             }
         }
     }

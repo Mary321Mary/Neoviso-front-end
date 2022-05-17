@@ -18,9 +18,10 @@
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
                                 type="email" v-model="customer.email" id="email" name="email" required > <br> <br>
 
-                            <label for="phone">Phone </label>
+                            <label for="phone">Phone (+375(25|29|33|44)222-33-44) </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
-                                type="text" v-model="customer.phone" id="phone" name="phone" required > <br> <br>
+                                type="tel" v-model="customer.phone" id="phone" name="phone"
+                                pattern="^\\+375\\((?:25|29|33|44)\\)\\d{3}-\\d{2}-\\d{2}$" required > <br> <br>
                             
                             <label for="address">Address </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
@@ -57,6 +58,17 @@
                 }
             };
         },
+        async mounted() {
+            let cusId = window.localStorage.getItem('cusId')
+            if (cusId != -1) {
+                const res = await window.axios.get(`customers/${cusId}`, {
+                    headers: {
+                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                    }
+                })
+                this.customer = res.data.data
+            }
+        },
         methods: {
             async submitCustomer() {
                 let cusId = window.localStorage.getItem('cusId')
@@ -90,17 +102,6 @@
                     })
                 }
                 this.$router.push("/customer");
-            }
-        },
-        async created() {
-            let cusId = window.localStorage.getItem('cusId')
-            if (cusId != -1) {
-                const res = await window.axios.get(`customers/${cusId}`, {
-                    headers: {
-                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                    }
-                })
-                this.customer = res.data.data
             }
         }
     }

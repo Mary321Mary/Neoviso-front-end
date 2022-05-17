@@ -6,7 +6,7 @@
             </div>
             <!-- desktop view -->
             <div class="flex bg-white space-x-12 hidden sm:block text-black-200 font-raleway tracking-wide items-center">
-                <router-link to="/">HOME</router-link> 
+                <router-link to="/">HOME</router-link>
                 <router-link to="/login" v-if="!getUser">LOGIN</router-link>
                 <router-link to="/customer" v-if="getUser">
                     CUSTOMERS
@@ -40,11 +40,9 @@
         },
         computed: {
             getUser() {
-                console.log(store.getters.getUser)
                 return store.getters.getUser;
             },
             getRole() {
-                console.log(store.getters.getRole)
                 return store.getters.getRole
             }
         }
