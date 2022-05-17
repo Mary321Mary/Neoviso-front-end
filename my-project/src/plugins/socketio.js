@@ -15,7 +15,6 @@ function initialiseSocket() {
 }
 
 export function addEventListener(event) {
-    console.log('addEventListener')
     if (!socket) {
         initialiseSocket();
     }
@@ -23,7 +22,6 @@ export function addEventListener(event) {
 }
 
 export function sendEvent(event) {
-    console.log('sendEvent')
     if (!socket) {
         initialiseSocket();
     }

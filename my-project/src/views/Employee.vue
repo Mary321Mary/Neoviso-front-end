@@ -62,19 +62,11 @@
             socketio.addEventListener({
                 type: 'employees',
                 callback: (data) => {
-                    this.employees = data.results
+                    this.employees = data
                 }
             });
         },
         methods: {
-            // async loadListItem() {
-            //     const res = await window.axios.get(`employees?populate[0]=Department`, {
-            //         headers: {
-            //             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-            //         },
-            //     })
-            //     this.employees = res.data.data
-            // },
             remove(empId) {
                 if(confirm("Do you really want to delete?")) {
                     window.axios.delete(`employees/${empId}`, {

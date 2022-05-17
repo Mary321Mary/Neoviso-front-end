@@ -61,36 +61,21 @@
             }
         },
         mounted() {
-            if(this.getRole == 'Reception') {
-                socketio.sendEvent({
-                    type: 'customer',
-                    data: {
-                        id: this.getUserId
-                    }
-                });
-                socketio.addEventListener({
-                    type: 'customer',
-                    callback: (data) => {
-                        this.customers = data
-                    }
-                });
-            } else {
-                socketio.sendEvent({
-                    type: 'customers',
-                    data: {
-                        page: this.page,
-                        recordsPerPage: this.recordsPerPage
-                    }
-                });
-                socketio.addEventListener({
-                    type: 'customers',
-                    callback: (data) => {
-                        this.customers = data.results
-                        this.totalPages = data.pagination.pageCount
-                        this.totalRecords = data.pagination.total
-                    }
-                });
-            }
+            socketio.sendEvent({
+                type: 'customers',
+                data: {
+                    page: this.page,
+                    recordsPerPage: this.recordsPerPage
+                }
+            });
+            socketio.addEventListener({
+                type: 'customers',
+                callback: (data) => {
+                    this.customers = data.results
+                    this.totalPages = data.pagination.pageCount
+                    this.totalRecords = data.pagination.total
+                }
+            });
         },
         methods: {
             // async loadListItem() {
@@ -106,22 +91,13 @@
             // },
             onPageChange(page) {
                 this.page = page
-                if(this.getRole == 'Reception') {
-                    socketio.sendEvent({
-                        type: 'customer',
-                        data: {
-                            id: this.getUserId
-                        }
-                    });
-                } else {
-                    socketio.sendEvent({
-                        type: 'customers',
-                        data: {
-                            page: this.page,
-                            recordsPerPage: this.recordsPerPage
-                        }
-                    });
-                }
+                socketio.sendEvent({
+                    type: 'customers',
+                    data: {
+                        page: this.page,
+                        recordsPerPage: this.recordsPerPage
+                    }
+                });
             },
             remove(cusId) {
                 if(confirm("Do you really want to delete?")) {
@@ -130,22 +106,13 @@
                             Authorization: `Bearer ${window.localStorage.getItem('jwt')}`
                         }
                     }).then(() => {
-                        if(this.getRole == 'Reception') {
-                            socketio.sendEvent({
-                                type: 'customer',
-                                data: {
-                                    id: this.getUserId
-                                }
-                            });
-                        } else {
-                            socketio.sendEvent({
-                                type: 'customers',
-                                data: {
-                                    page: this.page,
-                                    recordsPerPage: this.recordsPerPage
-                                }
-                            });
-                        }
+                        socketio.sendEvent({
+                            type: 'customers',
+                            data: {
+                                page: this.page,
+                                recordsPerPage: this.recordsPerPage
+                            }
+                        });
                     })
                 }
             },
@@ -157,9 +124,6 @@
         computed: {
             getRole() {
                 return store.getters.getRole
-            },
-            getUserId() {
-                return store.getters.getUserId
             }
         }
     }

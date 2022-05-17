@@ -3,10 +3,9 @@
         <div class="flex items-center justify-center h-screen">
             <div class="sm:w-1/2">
                 <div class="p-5 w-4/5 mx-auto text-left font-raleway">
-                    <div class="text-left mb-10"> 
-                        <router-link to="/">
-                            HOME
-                        </router-link> 
+                    <div class="flex bg-white space-x-12 hidden sm:block text-black-200 font-raleway tracking-wide items-center"> 
+                        <router-link to="/"> HOME </router-link> 
+                        <router-link to="/register">SIGN UP</router-link>
                     </div>
                     
                     <h1 class="font-bold text-left font-montserrat text-4xl sm:text-6xl mb-10">
@@ -34,6 +33,7 @@
 <script>
     import { mapActions } from 'vuex'
     import store from '../store/index'
+                        // <router-link to="/register" v-if="!getUser">SIGN UP</router-link>
     
     export default {
         name: 'LoginPage',

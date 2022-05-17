@@ -1,15 +1,6 @@
 <template>
-    <footer class="absolute w-full bottom-0 bg-gray-900 pb-6">
-        <div class="container mx-auto px-4">
-            <hr class="mb-6 border-b-1 border-gray-700" />
-            <div class="flex flex-wrap items-center md:justify-between justify-center">
-                <div class="w-full md:w-4/12 px-4">
-                    <div class="text-sm text-white font-semibold py-1">
-                        Copyright © {{date}}
-                    </div>
-                </div>
-            </div>
-        </div>
+    <footer class="pb-6 pl-4 pt-4 w-full bg-black fixed bottom-0 z-20 text-white">
+        Copyright © {{date}}
     </footer>
 </template>
 <script>

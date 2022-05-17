@@ -46,6 +46,17 @@
                 }
             };
         },
+        async mounted() {
+            let depId = window.localStorage.getItem('depId')
+            if (depId != -1) {
+                const res = await window.axios.get(`departments/${depId}`, {
+                    headers: {
+                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                    }
+                })
+                this.department = res.data.data
+            }
+        },
         methods: {
             async submitDepartment() {
                 let depId = window.localStorage.getItem('depId')
@@ -77,18 +88,6 @@
                     })
                 }
                 this.$router.push("/department");
-            }
-        },
-        async created() {
-            let depId = window.localStorage.getItem('depId')
-            console.log(depId)
-            if (depId != -1) {
-                const res = await window.axios.get(`departments/${depId}`, {
-                    headers: {
-                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                    }
-                })
-                this.department = res.data.data
             }
         }
     }

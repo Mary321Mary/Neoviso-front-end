@@ -25,7 +25,7 @@
                             <label for="employee">Employee </label>
                             <select v-model="appointment.employee" name="employee">
                                 <option v-for="(item, i) in employees" :key="i" id="employee" name="employee">
-                                    {{ item.attributes.Name }}
+                                    {{ item.Name }}
                                 </option>
                             </select> <br> <br>
 
@@ -69,6 +69,31 @@
                 customers: []
             };
         },
+        async mounted() {
+            let res = await window.axios.get(`customers`, {
+                headers: {
+                    Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                },
+            })
+            this.customers = res.data.data
+
+            res = await window.axios.get(`users?populate[0]=Department`, {
+                headers: {
+                    Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                },
+            })
+            this.employees = res.data
+
+            let appointId = window.localStorage.getItem('appointId')
+            if (appointId != -1) {
+                res = await window.axios.get(`appointments/${appointId}`, {
+                    headers: {
+                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
+                    }
+                })
+                this.appointment = res.data.data
+            }
+        },
         methods: {
             async submitAppointment() {
                 let appointId = window.localStorage.getItem('appointId')
@@ -106,31 +131,6 @@
                     })
                 }
                 this.$router.push("/");
-            }
-        },
-        async created() {
-            let res = await window.axios.get(`customers`, {
-                headers: {
-                    Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                },
-            })
-            this.customers = res.data.data
-
-            res = await window.axios.get(`employees?populate[0]=Department`, {
-                headers: {
-                    Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                },
-            })
-            this.employees = res.data.data
-
-            let appointId = window.localStorage.getItem('appointId')
-            if (appointId != -1) {
-                res = await window.axios.get(`appointments/${appointId}`, {
-                    headers: {
-                        Authorization: `Bearer ${window.localStorage.getItem('jwt')}`,
-                    }
-                })
-                this.appointment = res.data.data
             }
         }
     }
