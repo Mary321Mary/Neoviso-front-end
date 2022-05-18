@@ -40,7 +40,8 @@
                         <div class="my-4">
                             <h1 class="text-left font-bold mb-2 font-montserrat">Phone (+375(25|29|33|44)222-33-44)</h1>
                             <input type="tel" v-model="phone" class="text-sm outline-none pb-2 w-4/5 bg-transparent border-b
-                                hover:border-blue-700 focus:border-blue-700">
+                                hover:border-blue-700 focus:border-blue-700"
+                                pattern="^\+375\((?:25|29|33|44)\)\d{3}-\d{2}-\d{2}$" >
                         </div>
                         <div class="my-4">
                             <h1 class="text-left font-bold mb-2 font-montserrat">Department</h1>
@@ -94,8 +95,7 @@
                         Address: this.address,
                         Phone: this.phone,
                         Department: this.departments.find(department => 
-                            department.attributes.Name === this.department),
-                        role: 'Doctor'
+                            department.attributes.Name === this.department)
                     })
                     this.$router.push('login')
                 } catch(e) {

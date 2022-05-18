@@ -29,14 +29,20 @@
 </template>
 <script>
     import store from '../store/index'
+    import { mapActions } from 'vuex'
 
     export default {
         name: 'NavComp',
         methods: {
+            ...mapActions(['fetchUser']),
             logout() {
                 window.localStorage.removeItem('jwt')
+                store.dispatch('logout')
                 this.$router.push('/login')
             }
+        },
+        async mounted() {
+            store.dispatch('fetchUser')
         },
         computed: {
             getUser() {

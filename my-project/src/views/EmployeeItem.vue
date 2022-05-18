@@ -21,7 +21,7 @@
                             <label for="phone">Phone (+375(25|29|33|44)222-33-44) </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
                                 type="tel" v-model="employee.phone" id="phone" name="phone"
-                                pattern="^\\+375\\((?:25|29|33|44)\\)\\d{3}-\\d{2}-\\d{2}$" required > <br> <br>
+                                pattern="^\+375\((?:25|29|33|44)\)\d{3}-\d{2}-\d{2}$" required > <br> <br>
                             
                             <label for="address">Address </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
@@ -97,26 +97,28 @@
                             department.attributes.Name === this.employee.department)
                     }
                 }
-                if (confirm("Are you sure?") && empId != -1) {
-                    await window.axios({
-                        method: 'PUT',
-                        url: `employees/${this.employee.id}`,
-                        data: JSON.stringify(requestOptions),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
-                        }
-                    })
-                } else {
-                    await window.axios({
-                        method: 'POST',
-                        url: 'employees',
-                        data: JSON.stringify(requestOptions),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
-                        }
-                    })
+                if (confirm("Are you sure?")) {
+                    if(empId != -1) {
+                        await window.axios({
+                            method: 'PUT',
+                            url: `employees/${this.employee.id}`,
+                            data: JSON.stringify(requestOptions),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
+                            }
+                        })
+                    } else {
+                        await window.axios({
+                            method: 'POST',
+                            url: 'employees',
+                            data: JSON.stringify(requestOptions),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
+                            }
+                        })
+                    }
                 }
                 this.$router.push("/employee");
             }

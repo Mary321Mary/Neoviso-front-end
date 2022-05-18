@@ -14,7 +14,7 @@
                                     Name: {{ item.Name }}
                                 </p>
                                 <p>
-                                    Email: {{ item.Email }}
+                                    Email: {{ item.email }}
                                 </p>
                                 <p>
                                     Phone: {{ item.Phone }}
