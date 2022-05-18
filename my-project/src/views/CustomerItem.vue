@@ -21,7 +21,7 @@
                             <label for="phone">Phone (+375(25|29|33|44)222-33-44) </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
                                 type="tel" v-model="customer.phone" id="phone" name="phone"
-                                pattern="^\\+375\\((?:25|29|33|44)\\)\\d{3}-\\d{2}-\\d{2}$" required > <br> <br>
+                                pattern="^\+375\((?:25|29|33|44)\)\d{3}-\d{2}-\d{2}$" required > <br> <br>
                             
                             <label for="address">Address </label>
                             <input class="bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight"
@@ -80,26 +80,28 @@
                         Address: this.customer.address
                     }
                 }
-                if (confirm("Are you sure?") && cusId != -1) {
-                    await window.axios({
-                        method: 'PUT',
-                        url: `customers/${this.customer.id}`,
-                        data: JSON.stringify(requestOptions),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
-                        }
-                    })
-                } else {
-                    await window.axios({
-                        method: 'POST',
-                        url: 'customers',
-                        data: JSON.stringify(requestOptions),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
-                        }
-                    })
+                if (confirm("Are you sure?")) {
+                    if(cusId != -1) {
+                        await window.axios({
+                            method: 'PUT',
+                            url: `customers/${this.customer.id}`,
+                            data: JSON.stringify(requestOptions),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
+                            }
+                        })
+                    } else {
+                        await window.axios({
+                            method: 'POST',
+                            url: 'customers',
+                            data: JSON.stringify(requestOptions),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
+                            }
+                        })
+                    }
                 }
                 this.$router.push("/customer");
             }

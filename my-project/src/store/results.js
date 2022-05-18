@@ -28,6 +28,9 @@ const actions = {
             }
         });
         commit('updateUser', res.data.username)
+    },
+    logout({commit}){
+        commit('logout')
     }
 }
 const mutations = {
@@ -36,6 +39,10 @@ const mutations = {
     },
     updateRole: (state, results) => {
         state.role = results
+    },
+    logout(state) {
+        state.role = ''
+        state.user = ''
     }
 }
 export default {

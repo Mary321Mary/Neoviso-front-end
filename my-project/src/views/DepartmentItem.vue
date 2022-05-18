@@ -66,26 +66,28 @@
                         Address: this.department.address
                     }
                 }
-                if (confirm("Are you sure?") && depId != -1) {
-                    await window.axios({
-                        method: 'PUT',
-                        url: `departments/${this.department.id}`,
-                        data: JSON.stringify(requestOptions),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
-                        }
-                    })
-                } else {
-                    await window.axios({
-                        method: 'POST',
-                        url: 'departments',
-                        data: JSON.stringify(requestOptions),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
-                        }
-                    })
+                if (confirm("Are you sure?")) {
+                    if(depId != -1) {
+                        await window.axios({
+                            method: 'PUT',
+                            url: `departments/${this.department.id}`,
+                            data: JSON.stringify(requestOptions),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
+                            }
+                        })
+                    } else {
+                        await window.axios({
+                            method: 'POST',
+                            url: 'departments',
+                            data: JSON.stringify(requestOptions),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
+                            }
+                        })
+                    }
                 }
                 this.$router.push("/department");
             }

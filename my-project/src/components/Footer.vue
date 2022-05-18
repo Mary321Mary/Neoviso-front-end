@@ -1,5 +1,5 @@
 <template>
-    <footer class="pb-6 pl-4 pt-4 w-full bg-black fixed bottom-0 z-20 text-white">
+    <footer>
         Copyright © {{date}}
     </footer>
 </template>
@@ -14,4 +14,13 @@
     }
 </script>
 <style scoped>
+    footer {
+        background-position: center center;
+        background-repeat: repeat;
+        clear: both;
+        position: relative;
+        padding: 5px;
+        width: 100%;
+        bottom: 0;
+    }
 </style>

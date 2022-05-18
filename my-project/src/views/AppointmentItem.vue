@@ -108,27 +108,28 @@
                             customer.attributes.Name === this.appointment.customer)
                     }
                 }
-                console.log(requestOptions)
-                if (confirm("Are you sure?") && appointId != -1) {
-                    await window.axios({
-                        method: 'PUT',
-                        url: `appointments/${this.appointment.id}`,
-                        data: JSON.stringify(requestOptions),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
-                        }
-                    })
-                } else {
-                    await window.axios({
-                        method: 'POST',
-                        url: 'appointments',
-                        data: JSON.stringify(requestOptions),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
-                        }
-                    })
+                if (confirm("Are you sure?")) {
+                    if(appointId != -1) {
+                        await window.axios({
+                            method: 'PUT',
+                            url: `appointments/${this.appointment.id}`,
+                            data: JSON.stringify(requestOptions),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
+                            }
+                        })
+                    } else {
+                        await window.axios({
+                            method: 'POST',
+                            url: 'appointments',
+                            data: JSON.stringify(requestOptions),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
+                            }
+                        })
+                    }
                 }
                 this.$router.push("/");
             }
